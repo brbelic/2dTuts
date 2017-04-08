@@ -4,13 +4,56 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    private bool _isFacingRight;
+    private CharacterController2D _controller;
+    private float _normalizedHorizontalSpeed;
+
+    public float MaxSpeed = 8;
+    public float SpeedAccelerationOnGround = 10f;
+    public float SpeedAccelerationInAir = 5f;
+
+    public void Start() {
+
+        _controller = GetComponent<CharacterController2D>();
+        _isFacingRight = transform.localScale.x > 0;    //if it's >0 then we are facing right, if it's <0 we are flipped, and facing left
+    }
+
+    public void Update() {
+
+        HandleInput();
+
+        var MovementFactor = _controller.State.IsGrounded ? SpeedAccelerationOnGround : SpeedAccelerationInAir;
+        _controller.SetHorizontalForce(Mathf.Lerp(_controller.Velocity.x, _normalizedHorizontalSpeed * MaxSpeed, Time.deltaTime * MovementFactor));
+    }
+
+    private void HandleInput() {
+
+        if (Input.GetKey(KeyCode.D)) {
+
+            _normalizedHorizontalSpeed = 1;
+            if (!_isFacingRight)
+                Flip();
+        }
+        else if (Input.GetKey(KeyCode.A)) {
+
+            _normalizedHorizontalSpeed = -1;
+            if (_isFacingRight)
+                Flip();
+        }
+        else {
+
+            _normalizedHorizontalSpeed = 0;
+        }
+
+        if (_controller.CanJump && Input.GetKeyDown(KeyCode.Space)) {
+
+            _controller.Jump();
+        }
+    }
+
+    private void Flip() {
+
+        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        _isFacingRight = transform.localScale.x > 0;
+    }
 }
