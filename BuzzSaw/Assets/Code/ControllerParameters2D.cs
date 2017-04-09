@@ -8,7 +8,7 @@ public class ControllerParameters2D {
 
     public enum JumpBehavior {
         
-        CanJumpFromGround,
+        CanJumpOnGround,
         CanJumpAnywhere,
         CantJump
     }
@@ -22,4 +22,6 @@ public class ControllerParameters2D {
     public JumpBehavior JumpRestrictions;
 
     public float JumpFrequency = .25f;
+
+    public float JumpMagnitude = 12;
 }
