@@ -12,7 +12,9 @@ public class Player : MonoBehaviour {
     public float SpeedAccelerationOnGround = 10f;
     public float SpeedAccelerationInAir = 5f;
 
-    public void Start() {
+    public bool IsDead { get; private set; }
+
+    public void Awake() {
 
         _controller = GetComponent<CharacterController2D>();
         _isFacingRight = transform.localScale.x > 0;    //if it's >0 then we are facing right, if it's <0 we are flipped, and facing left
@@ -20,20 +22,37 @@ public class Player : MonoBehaviour {
 
     public void Update() {
 
-        HandleInput();
+        if (!IsDead)
+            HandleInput();
 
         var MovementFactor = _controller.State.IsGrounded ? SpeedAccelerationOnGround : SpeedAccelerationInAir;
-        _controller.SetHorizontalForce(Mathf.Lerp(_controller.Velocity.x, _normalizedHorizontalSpeed * MaxSpeed, Time.deltaTime * MovementFactor));
+
+        //ReSharper disable ConvertIfStatementToConditionalTernaryExpression
+        if (IsDead)
+            _controller.SetHorizontalForce(0);
+        else
+            _controller.SetHorizontalForce(Mathf.Lerp(_controller.Velocity.x, _normalizedHorizontalSpeed * MaxSpeed, Time.deltaTime * MovementFactor));
     }
 
     public void Kill() {
 
+        _controller.HandleCollisions = false;
+        GetComponent<Collider2D>().enabled = false;
+        IsDead = true;
 
+        _controller.SetForce(new Vector2(0, 20));
     }
 
     public void RespawnAt (Transform spawnPoint) {
 
+        if (!_isFacingRight)
+            Flip();
 
+        IsDead = false;
+        GetComponent<Collider2D>().enabled = true;
+        _controller.HandleCollisions = true;
+
+        transform.position = spawnPoint.position;
     }
 
     private void HandleInput() {
