@@ -98,6 +98,8 @@
     <Compile Include="Assets\Code\JumpPlatform.cs" />
     <Compile Include="Assets\Code\LevelManager.cs" />
     <Compile Include="Assets\Code\PathDefinition.cs" />
+    <Compile Include="Assets\Code\PathedProjectile.cs" />
+    <Compile Include="Assets\Code\PathedProjectileSpawner.cs" />
     <Compile Include="Assets\Code\Player.cs" />
     <Compile Include="Assets\Code\PointStar.cs" />
   </ItemGroup>
