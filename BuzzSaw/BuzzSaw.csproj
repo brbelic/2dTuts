@@ -94,6 +94,7 @@
     <Compile Include="Assets\Code\HealthBar.cs" />
     <Compile Include="Assets\Code\IFloatingTextPositioner.cs" />
     <Compile Include="Assets\Code\IPlayerRespawnListener.cs" />
+    <Compile Include="Assets\Code\ITakeDamage.cs" />
     <Compile Include="Assets\Code\InstaKill.cs" />
     <Compile Include="Assets\Code\JumpPlatform.cs" />
     <Compile Include="Assets\Code\LevelManager.cs" />
@@ -102,6 +103,8 @@
     <Compile Include="Assets\Code\PathedProjectileSpawner.cs" />
     <Compile Include="Assets\Code\Player.cs" />
     <Compile Include="Assets\Code\PointStar.cs" />
+    <Compile Include="Assets\Code\Projectile.cs" />
+    <Compile Include="Assets\Code\SimpleProjectile.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
