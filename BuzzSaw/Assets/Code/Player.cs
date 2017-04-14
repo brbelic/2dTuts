@@ -50,6 +50,12 @@ public class Player : MonoBehaviour, ITakeDamage {
             _controller.SetHorizontalForce(Mathf.Lerp(_controller.Velocity.x, _normalizedHorizontalSpeed * MaxSpeed, Time.deltaTime * MovementFactor));
     }
 
+    public void FinishLevel() {
+
+        enabled = false;
+        _controller.enabled = false;
+    }
+
     public void Kill() {
 
         _controller.HandleCollisions = false;

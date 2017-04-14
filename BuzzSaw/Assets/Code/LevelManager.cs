@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class LevelManager : MonoBehaviour {
@@ -33,6 +34,7 @@ public class LevelManager : MonoBehaviour {
 
     public void Awake(){
 
+        _savedPoints = GameManager.Instance.Points;
         Instance = this;
     }
 
@@ -90,6 +92,27 @@ public class LevelManager : MonoBehaviour {
         GameManager.Instance.AddPoints(CurrentTimeBonus);
         _savedPoints = GameManager.Instance.Points;
         _started = DateTime.UtcNow; 
+    }
+
+    public void GoToNextLevel(string levelName) {
+
+        StartCoroutine(GoToNextLevelCo(levelName));
+    }
+
+    private IEnumerator GoToNextLevelCo(string levelName) {
+
+        Player.FinishLevel();
+        GameManager.Instance.AddPoints(CurrentTimeBonus);
+        FloatingText.Show("Level Complete!", "CheckpointText", new CenteredTextPositioner(.2f));
+        yield return new WaitForSeconds(1f);
+
+        FloatingText.Show(string.Format("{0} points!", GameManager.Instance.Points), "CheckpointText", new CenteredTextPositioner(.1f));
+        yield return new WaitForSeconds(5f);
+
+        if (string.IsNullOrEmpty(levelName))
+            SceneManager.LoadScene("StartScreen");
+        else
+            SceneManager.LoadScene(levelName);
     }
 
     public void KillPlayer() {
